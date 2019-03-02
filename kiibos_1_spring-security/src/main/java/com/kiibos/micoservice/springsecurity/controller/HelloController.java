@@ -4,6 +4,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 /**
  * @ClassName HelloController
  * @Description TODO
@@ -21,7 +23,8 @@ public class HelloController {
 
     @RequestMapping("/whoim")
     public Object whoIm(){
-        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal =SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal;
     }
 
 

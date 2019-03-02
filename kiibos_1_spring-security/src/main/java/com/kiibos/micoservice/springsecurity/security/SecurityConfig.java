@@ -1,11 +1,14 @@
 package com.kiibos.micoservice.springsecurity.security;
 
+import com.kiibos.micoservice.springsecurity.jwt.JWTAuthenticationFilter;
+import com.kiibos.micoservice.springsecurity.jwt.JWTLoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -34,8 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationFailureHandler myAuthenticationFailHander;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
     private DataSource dataSource;
@@ -54,10 +55,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .tokenRepository(persistentTokenRepository())
                     //.tokenValiditySeconds(60)
                 .and()
-                .authorizeRequests()//.anyRequest().authenticated()
-                .anyRequest().access("@rbacService.hasPermission(request,authentication)")
+                .authorizeRequests().anyRequest().authenticated()
+                //.anyRequest().access("@rbacService.hasPermission(request,authentication)")
                 .and()
-                .csrf().disable();
+                .csrf().disable()
+                .addFilter(new JWTLoginFilter(authenticationManager()))
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Bean
