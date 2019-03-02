@@ -13,8 +13,7 @@ import lombok.ToString;
 @ToString
 public class Wrapper<T> {
 
-    private static final Integer SUCCESS_CODE = 1;
-    private static final Integer FAILED_CODE = 2;
+    private static final Integer SUCCESS_CODE = 200;
 
     private Integer code;
     private String msg;
@@ -40,9 +39,9 @@ public class Wrapper<T> {
         return wrapper;
     }
 
-    public static <T> Wrapper<T> newFailed(String msg){
+    public static <T> Wrapper<T> newFailed(Integer code,String msg){
         Wrapper<T> wrapper =new Wrapper<>();
-        wrapper.code = FAILED_CODE;
+        wrapper.code = code;
         wrapper.msg = msg;
         wrapper.data = null;
         return wrapper;
