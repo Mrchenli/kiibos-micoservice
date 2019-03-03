@@ -1,0 +1,53 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: @pom.artifactId@
+  security:
+    user:
+      name: admin
+      password: 'admin'
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Mrchenli/kiibos-config-repo.git
+          username: Mrchenli
+          password: cl1234567
+          search-paths: /*
+          default-label: master
+          basedir: /data/config/kiibos-config-repo
+          force-pull: true
+#    stream:
+#      kafka:      #kafka zookeeper绑定地址
+#        binder:
+#          brokers: localhost:9092     #kafka地址
+#          defaultBrokerPort: 9092       #kafka默认端口
+#          autoCreateTopics: true
+#          autoAddPartitions: true
+    inetutils:
+      ignoredInterfaces:
+        - docker0
+        - veth.*
+      preferredNetworks:
+        - 192.168
+
+server:
+  port: 8080
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://kiibos:kiibos@localhost:8761/eureka/
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    preferIpAddress: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+
+#encrypt:
+#  key-store:
+#    location: classpath:/server.jks
+#    password:
+#    alias: kiibos-key-store
+#    secret:
