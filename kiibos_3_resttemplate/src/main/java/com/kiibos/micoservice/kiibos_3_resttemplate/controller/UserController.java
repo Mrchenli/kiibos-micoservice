@@ -1,5 +1,7 @@
 package com.kiibos.micoservice.kiibos_3_resttemplate.controller;
 
+import com.kiibos.micoservice.kiibos_3_resttemplate.controller.common.BusinessException;
+import com.kiibos.micoservice.kiibos_3_resttemplate.controller.common.ErrorCodeEnum;
 import com.kiibos.micoservice.kiibos_3_resttemplate.controller.common.Wrapper;
 import com.kiibos.micoservice.kiibos_3_resttemplate.model.query.UserQuery;
 import com.kiibos.micoservice.kiibos_3_resttemplate.model.vo.UserVO;
@@ -30,7 +32,8 @@ public class UserController {
     @GetMapping("/{id}")
     @ApiOperation(httpMethod = "GET",value = "根据用户id获取用户信息")
     public Wrapper<UserVO> get(@ApiParam(name = "id",value = "用户id")@PathVariable("id") String id){
-        return userService.get(Integer.parseInt(id));
+        throw new BusinessException(ErrorCodeEnum.GL_ILLEGAL_ARG);
+        //return userService.get(Integer.parseInt(id));
     }
 
     @GetMapping
