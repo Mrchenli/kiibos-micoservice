@@ -1,0 +1,3 @@
+javac MetaSpaceOomMock.java
+
+java -XX:MetaspaceSize=80m -XX:MaxMetaspaceSize=80m MetaSpaceOomMock
