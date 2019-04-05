@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: @pom.artifactId@
+  cloud:
+    config:
+      fail-fast: true
+      discovery:
+        service-id: configserver
+        enable: true
+      label: master
+      profile: ${spring.profiles.active}
+      username: admin
+      password: admin
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://kiibos:kiibos@localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+    instance-id:  ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
