@@ -6,6 +6,7 @@ import com.kiibos.micoservice.kiibos_3_resttemplate.model.query.UserQuery;
 import com.kiibos.micoservice.kiibos_3_resttemplate.model.vo.UserVO;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,6 +22,7 @@ public class RestTemplateTest extends Kiibos3ResttemplateApplicationTests {
 
     @Autowired
     private RestTemplate restTemplate;
+
 
     @Test
     public void test(){
