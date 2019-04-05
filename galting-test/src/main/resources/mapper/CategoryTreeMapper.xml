@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kiibos.micoservice.galtingtest.mapper.CategoryTreeMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        category_id, level, parent_category_id
+    </sql>
+
+
+
+    <insert id="insertPath" parameterType="java.lang.Long" >
+        insert into KIIBOS_GALT_CATEGORY_TREE (category_id,level,parent_category_id)
+        select
+            #{id},level+1,parent_category_id
+        from
+            KIIBOS_GALT_CATEGORY_TREE
+        where
+            category_id = #{parent}
+    </insert>
+
+    <insert id="insertNode" parameterType="java.lang.Long">
+        insert into KIIBOS_GALT_CATEGORY_TREE (category_id,level,parent_category_id) values (#{id},0,#{id})
+    </insert>
+
+
+    <delete id="deletePathNode">
+        DELETE FROM
+          KIIBOS_GALT_CATEGORY_TREE
+        WHERE
+          category_id
+        IN
+          (
+            select t.category_id from (select category_id from KIIBOS_GALT_CATEGORY_TREE where parent_category_id=#{id}) as t
+          )
+    </delete>
+
+</mapper>

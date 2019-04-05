@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kiibos.micoservice.galtingtest.mapper.CategoryMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        category_id, create_time, creator, updater, category_name, update_time
+    </sql>
+
+
+
+    <delete id="deleteNode">
+        delete from
+          KIIBOS_GALT_CATEGORY
+        WHERE
+          category_id
+        in
+          (
+            select category_id from KIIBOS_GALT_CATEGORY_TREE where parent_category_id=#{categoryId}
+          )
+    </delete>
+
+
+    <select id="getChirldrenCatetoryTree" resultType="com.kiibos.micoservice.galtingtestapi.dto.CategoryTreeDto">
+        select
+            c.category_id as id,
+            c.category_name as categoryName,
+            tree.parent_category_id as pid
+        from
+            KIIBOS_GALT_CATEGORY c
+        inner join
+            (
+                select category_id,parent_category_id from KIIBOS_GALT_CATEGORY_TREE where parent_category_id=#{categoryId}
+            ) as t
+        on t.category_id = c.category_id
+        inner join KIIBOS_GALT_CATEGORY_TREE as tree
+        on tree.category_id = c.category_id
+        where tree.`level`=1
+    </select>
+
+</mapper>
